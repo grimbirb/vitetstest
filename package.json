@@ -10,7 +10,7 @@
     "postbuild": "node copy404.js",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "vite build && gh-pages -d dist -b gh-pages --add"
   },
   "devDependencies": {
     "@types/page": "^1.11.9",
