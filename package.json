@@ -2,7 +2,6 @@
   "name": "vitetstest",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://grimbirb.github.io/vitetstest/",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +9,7 @@
     "postbuild": "node copy404.js",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "vite build && gh-pages -d dist -b gh-pages --add"
+    "deploy": "npm run build && gh-pages -d dist -b gh-pages --no-history"
   },
   "devDependencies": {
     "@types/page": "^1.11.9",
