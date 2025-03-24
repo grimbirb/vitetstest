@@ -5,26 +5,26 @@ class Router {
   basePath: string;
 
   constructor(basePath: string = "") {
-    this.basePath = basePath;
+    this.basePath = basePath.replace(/\/$/, ""); // remove trailing slash if present
     window.addEventListener("popstate", () =>
-      this.route(window.location.pathname)
+      this.route(window.location.pathname.replace(this.basePath, ""))
     );
   }
 
-  // Register a route and its handler
+  // register a route and its handler
   addRoute(path: string, handler: Function) {
-    this.routes[this.basePath + path] = handler;
+    this.routes[path] = handler;
   }
 
-  // Navigate to a new route
+  // navigate to a new route
   navigate(path: string) {
     const fullPath = this.basePath + path;
     history.pushState({}, "", fullPath);
-    this.route(fullPath);
+    this.route(path);
   }
 
-  // Route handler to match the path and render the corresponding content
   route(path: string) {
+    path = path.replace(this.basePath, ""); // remove base path before checking routes
     const handler = this.routes[path];
     if (handler) {
       handler();
@@ -33,7 +33,7 @@ class Router {
     }
   }
 
-  // Default 404 handler
+  // default 404 handler
   handle404() {
     const app = document.getElementById("app");
     if (app) {
@@ -42,7 +42,9 @@ class Router {
   }
 }
 
-const router = new Router("/");
+const router = new Router(
+  window.location.origin.includes("github.io") ? "/vitetstest" : "/"
+);
 
 // route handlers
 router.addRoute("/", () => {
@@ -59,7 +61,7 @@ router.addRoute("/about", () => {
   }
 });
 
-// Navigate to a route programmatically
+// Set up navigation links
 document.getElementById("home-link")?.addEventListener("click", (event) => {
   event.preventDefault();
   router.navigate("/");
@@ -70,5 +72,5 @@ document.getElementById("about-link")?.addEventListener("click", (event) => {
   router.navigate("/about");
 });
 
-// Call route handler for the initial page load (default route)
-router.route(window.location.pathname);
+// Handle initial page load
+router.route(window.location.pathname.replace(router.basePath, ""));
