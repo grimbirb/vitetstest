@@ -42,7 +42,7 @@ class Router {
   }
 }
 
-const router = new Router("/vitetstest");
+const router = new Router("/");
 
 // route handlers
 router.addRoute("/", () => {
